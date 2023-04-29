@@ -4,14 +4,6 @@
 #include<string.h>
 #include<math.h>
 
-typedef struct heap* Heap;
-struct heap {
-    Data points;
-    int size;
-    int capacity;
-    int depth;
-};
-
 Heap heap_create()
 {
     Heap h = malloc(sizeof(struct heap));
@@ -68,24 +60,39 @@ void max_heapify(Heap h, int index, int coord)
         }
     }
     else if(coord == 1){
-        if(h->points[left].x == h->points[largest].x || h->points[right].x == h->points[largest].x ){
              if (left < h->size && h->points[left].y > h->points[largest].y )
             {
-                largest = left;
+                if( h->points[left].x == h->points[largest].x){
+                    largest = left;
+                }
+                else{
+                     if ( h->points[left].x > h->points[largest].x)
+                    {
+                        largest = left;
+                    }
+                    // if (h->points[right].x > h->points[largest].x)
+                    // {
+                    //     largest = right;
+                    // }
+                }
+                
             }
             if (right < h->size  && h->points[right].y > h->points[largest].y)
             {
-                largest = right;
+                 if( h->points[right].x == h->points[largest].x){
+                    largest = right;
+                }
+                else{
+                    //  if ( h->points[left].x > h->points[largest].x)
+                    // {
+                    //     largest = left;
+                    // }
+                    if (h->points[right].x > h->points[largest].x)
+                    {
+                        largest = right;
+                    }
+                }
             }
-        }
-        else{
-            if(h->points[left].x != h->points[largest].x){
-                largest = left;
-            }
-            else{
-                largest = right;
-            }
-        }
     }
     
     if (largest != index)
@@ -141,7 +148,7 @@ while(!feof(fp)){
     h->points = data_entries;
     
     h = build_max_heap(h, 0);
-    //  printf("%d ", h->size);
+    //  printf("%d ", sizeof(h->points)/sizeof(h->points[0]));
     int n= h->size;
     h = heap_sort(h, 0);
     h = heap_sort(h, 1);
