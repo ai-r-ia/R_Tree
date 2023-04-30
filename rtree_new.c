@@ -3,15 +3,13 @@
 #include<stdlib.h>
 #include<string.h>
 #include<math.h>
+#include <stdbool.h>
 
-int data_size = 21;
-struct data data_entries[21];
-
-int max(int a, int b){
+int maxi(int a, int b){
     return a>b?a:b;
 }
 
-int min(int a, int b){
+int mini(int a, int b){
     return a>b?b:a;
 }
 
@@ -19,38 +17,39 @@ int findArea(struct rect mbr){
     return (mbr.x_max-mbr.x_min)*(mbr.y_max-mbr.y_min);
 }
 
-struct data findCenter(NODE given_node){
-    struct data coord;
+
+struct center findCenter(NODE given_node){
+    struct center coord;
     coord.x = (given_node->mbr.x_min+given_node->mbr.x_max)/2.0;
     coord.y = (given_node->mbr.y_min+given_node->mbr.y_max)/2.0;
     // printf("%f %f\n", coord.x , coord.y);
     return coord ;
 }
 
-NODE* algo_str(NODE* leaveslist, int size){
-    int P = ceil(size/M);
-    int S = ceil(sqrt(P));
-    struct data coords[6];
-    for(int i=0 ;i<size;i++){
-        coords[i] = findCenter(leaveslist[i]);
-    }
+// NODE* algo_str(NODE* leaveslist, int size){
+//     int P = ceil(size/M);
+//     int S = ceil(sqrt(P));
+//     struct center coords[6];
+//     for(int i=0 ;i<size;i++){
+//         coords[i] = findCenter(leaveslist[i]);
+//     }
     
 //     // for(int i=0 ;i<size;i++){
 //     //    printf("%f %f ",coords[i].x,coords[i].y);
 //     // }
     
 
-    // // sorting based on values of x
-    // NODE swap =malloc(sizeof(struct node));
-    // for(int j=0; j<size-1;j++)
-    // for(int i =0 ; i<size-1-j; i++){
-    //     if(coords[i].x > coords[i+1].x){
-    //         swap = leaveslist[i];
-    //         leaveslist[i]=leaveslist[i+1];
-    //         leaveslist[i+1] = swap;
-    //     }
-    // }
-    // return leaveslist;
+//     // sorting based on values of x
+//     NODE swap =malloc(sizeof(struct node));
+//     for(int j=0; j<size-1;j++)
+//     for(int i =0 ; i<size-1-j; i++){
+//         if(coords[i].x > coords[i+1].x){
+//             swap = leaveslist[i];
+//             leaveslist[i]=leaveslist[i+1];
+//             leaveslist[i+1] = swap;
+//         }
+//     }
+//     return leaveslist;
 
     // // sorting based on values of y
     // int remaining = data_size;
@@ -68,15 +67,15 @@ NODE* algo_str(NODE* leaveslist, int size){
     //     }
     //      remaining = remaining - S*M;
     // }
-}
+// }
 
 struct rect findMBR(NODE given_node){
     struct rect mbr = given_node->rect[0];
     for(int i=1; i<given_node->count;i++){
-        mbr.x_min = min(mbr.x_min, given_node->rect[i].x_min);
-        mbr.y_min = min(mbr.y_min, given_node->rect[i].y_min);
-        mbr.x_max = max(mbr.x_max, given_node->rect[i].x_max);
-        mbr.y_max = max(mbr.y_max, given_node->rect[i].y_max);
+        mbr.x_min = mini(mbr.x_min, given_node->rect[i].x_min);
+        mbr.y_min = mini(mbr.y_min, given_node->rect[i].y_min);
+        mbr.x_max = maxi(mbr.x_max, given_node->rect[i].x_max);
+        mbr.y_max = maxi(mbr.y_max, given_node->rect[i].y_max);
     }
     return mbr;
 }
@@ -87,7 +86,7 @@ NODE createLeaf(struct data* data_entries, int count){
     NODE new_leaf;
     new_leaf = malloc(sizeof(struct node));
     new_leaf->count=0;
-    new_leaf->type = 1;
+    new_leaf->kind = 1;
     for(int i=0; i<count;i++){
         new_leaf->entries[i] = data_entries[i];
         new_leaf->rect[i] = (struct rect){.x_min=data_entries[i].x,.y_min=data_entries[i].y, .x_max=data_entries[i].x,.y_max=data_entries[i].y}  ;
@@ -104,7 +103,7 @@ NODE* createNodes(NODE *leavesList, int size){
     int j=0;
     for(int i =0; i<no_of_nodes; i++){
         nodesList[i]->count=0;
-        nodesList[i]->type=2;
+        nodesList[i]->kind=2;
         for(int k=0;k<4;k++){
         if(j==size) {break;}
         nodesList[i]->node_children[k] = leavesList[j] ; 
@@ -138,10 +137,21 @@ void createTree(struct rtree *tree, NODE *leavesList, int count){
         }
 }
 
+bool searchnode(NODE given_node, int xmin, int xmax, int ymin, int ymax){
+    if(given_node->kind==1){}
+}
+
+void searchTree(struct rtree* tree, int xmin, int xmax, int ymin, int ymax){
+    if(tree->root){
+        searchNode(tree->root, xmin, xmax, ymin, ymax);
+    }
+}
+
 // main function
 int main(int argc, char *argv[]){
 
-    
+    int data_size = 21;
+    struct data data_entries[21];
 
     // reading the data
     FILE *fp;
@@ -160,19 +170,21 @@ int main(int argc, char *argv[]){
         fclose(fp);
 
     int P = ceil(data_size/M);
-    int S = ceil(sqrt(P));
+    int p=0;
+    int S = ceil(sqrt(p*1.0));
     
     // implementing str
 
     // sorting based on values of x
     struct data swap;
-    for(int j=0; j<data_size-1;j++)
+    for(int j=0; j<data_size-1;j++){
     for(i =0 ; i<data_size-1-j; i++){
         if(data_entries[i].x > data_entries[i+1].x){
             swap = data_entries[i];
             data_entries[i]=data_entries[i+1];
             data_entries[i+1] = swap;
         }
+    }
     }
 
     // sorting based on values of y
@@ -192,26 +204,26 @@ int main(int argc, char *argv[]){
          remaining = remaining - S*M;
     }
 
-// // lite
-//     // for(int j=0; j<11;j++)
-//     // for(i =0 ; i<11-j; i++){
-//     //     if(data_entries[i].y > data_entries[i+1].y){
-//     //         swap = data_entries[i];
-//     //         data_entries[i]=data_entries[i+1];
-//     //         data_entries[i+1] = swap;
-//     //     }
-//     // }
+// lite
+    // for(int j=0; j<11;j++)
+    // for(i =0 ; i<11-j; i++){
+    //     if(data_entries[i].y > data_entries[i+1].y){
+    //         swap = data_entries[i];
+    //         data_entries[i]=data_entries[i+1];
+    //         data_entries[i+1] = swap;
+    //     }
+    // }
 
-//     // for(int j=0; j<9;j++)
-//     // for(i =12 ; i<20-j; i++){
-//     //     if(data_entries[i].y > data_entries[i+1].y){
-//     //         swap = data_entries[i];
-//     //         data_entries[i]=data_entries[i+1];
-//     //         data_entries[i+1] = swap;
-//     //     }
-//     // }
+    // for(int j=0; j<9;j++)
+    // for(i =12 ; i<20-j; i++){
+    //     if(data_entries[i].y > data_entries[i+1].y){
+    //         swap = data_entries[i];
+    //         data_entries[i]=data_entries[i+1];
+    //         data_entries[i+1] = swap;
+    //     }
+    // }
 
-//     // creating list of leaves
+    // creating list of leaves
 
     NODE leaves_list[6];
     int r = 21;
@@ -221,21 +233,21 @@ int main(int argc, char *argv[]){
     }
     r=21;
 
-//     // NODE* leaves_list2 = malloc(sizeof(NODE)*6);
-//     // leaves_list2 = algo_str(leaves_list, 6);
-//     // for(i =0; i<6;i++){
-//     //     for(int j =0; j<leaves_list2[i]->count; j++){
-//     //         printf("%d %d\n", leaves_list2[i]->entries[j].x,leaves_list2[i]->entries[j].y);
-//     //     }
-//     //     printf("------------\n");
-//     // }
-//     // creating tree
+    // NODE* leaves_list2 = malloc(sizeof(NODE)*6);
+    // leaves_list2 = algo_str(leaves_list, 6);
+    // for(i =0; i<6;i++){
+    //     for(int j =0; j<leaves_list2[i]->count; j++){
+    //         printf("%d %d\n", leaves_list2[i]->entries[j].x,leaves_list2[i]->entries[j].y);
+    //     }
+    //     printf("------------\n");
+    // }+
+    // creating tree
 
-//     // struct rtree* tree = malloc(sizeof(struct rtree));
-//     // tree->root = malloc(sizeof(struct node));
-//     // tree->height = r>0?1:0;
-//     // createTree(tree,leaves_list,6);
-//     // printf("done\n");
+    // struct rtree* tree = malloc(sizeof(struct rtree));
+    // tree->root = malloc(sizeof(struct node));
+    // tree->height = r>0?1:0;
+    // createTree(tree,leaves_list,6);
+    // printf("done\n");
 
-//     // printf("%d %d\n", tree->root->node_children[1]->node_children[1]->entries[0].x,tree->root->node_children[1]->node_children[1]->entries[0].y);
+    // printf("%d %d\n", tree->root->node_children[1]->node_children[1]->entries[0].x,tree->root->node_children[1]->node_children[1]->entries[0].y);
 }
