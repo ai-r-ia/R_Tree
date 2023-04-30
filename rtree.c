@@ -87,6 +87,18 @@ while(!feof(fp)){
 
 // implementing str
 
+
+// ----------------------------------------------------------------------------------
+// //applying heapsort to sort based on x and y
+// Heap h = malloc(sizeof(struct heap));
+//     h->points = data_entries;
+    
+//     h = build_max_heap(h, 0);            //building max heap
+//     h = heap_sort(h, 0);                 //sorting based on x
+//     h = heap_sort(h, 1);                 //sorting based on y
+// -----------------------------------------------------------------------------------
+
+
 // sorting based on values of x
 struct data swap;
 for(int j=0; j<20;j++)
