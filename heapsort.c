@@ -109,36 +109,36 @@ Heap heap_sort(Heap h, int coord)
     return h;
 }
 
-int main(void){
-    struct data data_entries[21];
-    FILE *fp;
-    fp = fopen("data.txt", "r");
-    if(fp == NULL)
-    {
-        printf("Error opening file");
-        exit(1);
-    }
-    int i=0;
-while(!feof(fp)){
-        int x,y ;
-        fscanf(fp,"%d %d",&data_entries[i].x,&data_entries[i].y);
-        i++;
-}
-    fclose(fp);
+// int main(void){
+//     struct data data_entries[21];
+//     FILE *fp;
+//     fp = fopen("data.txt", "r");
+//     if(fp == NULL)
+//     {
+//         printf("Error opening file");
+//         exit(1);
+//     }
+//     int i=0;
+// while(!feof(fp)){
+//         int x,y ;
+//         fscanf(fp,"%d %d",&data_entries[i].x,&data_entries[i].y);
+//         i++;
+// }
+//     fclose(fp);
 
-    Heap h = malloc(sizeof(struct heap));
-    h->points = data_entries;
+//     Heap h = malloc(sizeof(struct heap));
+//     h->points = data_entries;
     
-    h = build_max_heap(h, 0);
-    //  printf("%d ", sizeof(h->points)/sizeof(h->points[0]));
-    int n= h->size;
-    h = heap_sort(h, 0);
-    h = heap_sort(h, 1);
-    // heap_sort(h, 0);
-    for(int i = 0; i<n; i++){
-         printf("(%d, %d) ", h->points[i].x, h->points[i].y);
-    }
-}
+//     h = build_max_heap(h, 0);
+//     //  printf("%d ", sizeof(h->points)/sizeof(h->points[0]));
+//     int n= h->size;
+//     h = heap_sort(h, 0);
+//     h = heap_sort(h, 1);
+//     // heap_sort(h, 0);
+//     for(int i = 0; i<n; i++){
+//          printf("(%d, %d) ", h->points[i].x, h->points[i].y);
+//     }
+// }
 
 // (2,20)(2,19)-----> issue
 

@@ -1,5 +1,5 @@
-#ifndef HEADER_FILE
-#define HEADER_FILE
+#ifndef RTREE
+#define RTREE
 
 #define M 4
 #define m 2
@@ -19,26 +19,20 @@ struct rect {
     int y_max;
 };
 
-// typedef struct leaf* LEAF;
-
-// struct leaf
-// {
-//     int count;
-//     struct data entries[M];
-// };
-
 typedef struct node* NODE;
 
-enum kind {
+enum type {
     LEAF = 1,
-    BRANCH = 2,
+    INTERNAL_NODE = 2,
 };
 
 struct node
-{   enum kind kind;
+{   enum type type;
     int count;
     struct rect rect[M];
     struct rect mbr;
+    struct data center;
+    int area;
     union{
         struct node* node_children[M];
         struct data entries[M];
@@ -71,9 +65,16 @@ void max_heapify(Heap h, int index, int coord);
 Heap build_max_heap(Heap h, int coord);
 Heap heap_sort(Heap h, int coord);
 
-struct data search(int x1, int x2, int y1, int y2){}
+NODE createNode(int index, NODE *leavesList, int size);
+struct data search(int x1, int x2, int y1, int y2) {}
 void insert(int x1, int y){}
 void createTree(struct rtree *tree, NODE *leavesList, int count);
-NODE* createNodes(NODE *leavesList, int size);
+NODE* createLevel(NODE *leavesList, int size);
 NODE createLeaf(struct data* data_entries, int count);
+struct rect findMBR(NODE given_node);
+NODE *algo_str(NODE *leaveslist, int size);
+struct data findCenter(NODE given_node);
+int findArea(struct rect mbr);
+struct rtree *generateTree(NODE *leavesList, int count);
+
 #endif
