@@ -137,8 +137,38 @@ void createTree(struct rtree *tree, NODE *leavesList, int count){
         }
 }
 
+//karna hai
+bool intersects(){ 
+    return false;
+}
+
 bool searchnode(NODE given_node, int xmin, int xmax, int ymin, int ymax){
-    if(given_node->kind==1){}
+    if(given_node->kind==1){
+
+        for (int i = 0 ; i < given_node->count ; i++){
+
+            if ((given_node->entries[i].x <= xmax) && (given_node->entries[i].x >= xmin)&&(given_node->entries[i].y <= ymax)&&(given_node->entries[i].y >=ymin)){
+                
+                printf("x coordinate : %d y:  %d\n", given_node->entries[i].x, given_node->entries[i].y);
+            }
+        
+        }
+
+
+        return true;
+
+    }
+
+    else{
+        for (int i = 0 ; i < given_node->count ; i++){
+            if (intersects()) //karna hai
+                searchNode(given_node->node_children[i], xmin, xmax, ymin, ymax);
+        }
+
+
+    }
+
+    
 }
 
 void searchTree(struct rtree* tree, int xmin, int xmax, int ymin, int ymax){
