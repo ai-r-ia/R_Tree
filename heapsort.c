@@ -59,39 +59,21 @@ void max_heapify(Heap h, int index, int coord)
             largest = right;
         }
     }
+
     else if(coord == 1){
-             if (left < h->size && h->points[left].y > h->points[largest].y )
+             if (left < h->size && h->points[left].x != h->points[largest].x)
             {
-                if( h->points[left].x == h->points[largest].x){
+                if( h->points[left].x > h->points[largest].x || h->points[left].y > h->points[largest].y){
                     largest = left;
-                }
-                else{
-                     if ( h->points[left].x > h->points[largest].x)
-                    {
-                        largest = left;
-                    }
-                    // if (h->points[right].x > h->points[largest].x)
-                    // {
-                    //     largest = right;
-                    // }
                 }
                 
             }
-            if (right < h->size  && h->points[right].y > h->points[largest].y)
+            if (right < h->size  &&  h->points[right].x >= h->points[largest].x)
             {
-                 if( h->points[right].x == h->points[largest].x){
+                 if( h->points[right].x > h->points[largest].x || h->points[right].y > h->points[largest].y){
                     largest = right;
                 }
-                else{
-                    //  if ( h->points[left].x > h->points[largest].x)
-                    // {
-                    //     largest = left;
-                    // }
-                    if (h->points[right].x > h->points[largest].x)
-                    {
-                        largest = right;
-                    }
-                }
+            
             }
     }
     
@@ -106,7 +88,7 @@ void max_heapify(Heap h, int index, int coord)
 
 Heap build_max_heap(Heap h, int coord){
     h->size = 21;
-    for(int i = floor(h->size / 2) ; i>=1; i--)
+    for(int i = floor(h->size / 2) ; i>=0; i--)
     {
         max_heapify(h, i, coord);
     }
@@ -116,7 +98,7 @@ Heap build_max_heap(Heap h, int coord){
 Heap heap_sort(Heap h, int coord)
 {
     h = build_max_heap(h, coord);
-    for (int i = h->size - 1; i >= 1; i--)
+    for (int i = h->size - 1; i >=1; i--)
     {
         struct data temp = h->points[0];
         h->points[0] = h->points[i];
