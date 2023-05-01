@@ -91,11 +91,8 @@ void createTree(struct rtree *tree, NODE *leavesList, int count)
 {
     int x = ceil(count / (4.0));
     if (x == 1)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            tree->root = createNode(0, leavesList, x);
-        }
+    {  
+        tree->root = createNode(0, leavesList, count);
     }
     else
     {
