@@ -5,8 +5,7 @@
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #define max(a,b) (((a) > (b)) ? (a) : (b))
-#define M 4
-#define m 2
+#define b 4
 #define dimension 2
 
 typedef struct data *Data;
@@ -43,14 +42,14 @@ struct node
 {
     enum type type;
     int count;
-    struct rect rect[M];
+    struct rect rect[b];
     struct rect mbr;
     struct center center;
     int area;
     union
     {
-        struct node *node_children[M];
-        struct data entries[M];
+        struct node *node_children[b];
+        struct data entries[b];
     };
 };
 
@@ -508,7 +507,7 @@ int main(int argc, char *argv[])
     {
         int data_size = 21;
         struct data data_entries[21];
-        int P = ceil(data_size / (double)M);
+        int P = ceil(data_size / (double)b);
         int S = ceil(sqrt(P));
         printf("%d, %d......p ns\n", P, S);
 
@@ -551,12 +550,12 @@ int main(int argc, char *argv[])
             {
                 break;
             }
-            int ele = min(S * M, remaining);
+            int ele = min(S * b, remaining);
 
             Heap ySortingHeap = heap_create();
             ySortingHeap->points = malloc(sizeof(struct data) * ele);
 
-            for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, data_size) - k, l < ele; i++, l++)
+            for (int i = k * S * b, l = 0; i < min((k + 1) * S * b, data_size) - k, l < ele; i++, l++)
             {
                 ySortingHeap->points[l] = data_entries[i];
                 printf("(%d, %d )", ySortingHeap->points[l].x, ySortingHeap->points[l].y);
@@ -572,7 +571,7 @@ int main(int argc, char *argv[])
                 printf("(%d, %d )", ySortingHeap->points[j].x, ySortingHeap->points[j].y);
             }
             printf("&&  after sort\n");
-            for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, data_size) - k, l < ele; i++, l++)
+            for (int i = k * S * b, l = 0; i < min((k + 1) * S * b, data_size) - k, l < ele; i++, l++)
             {
                 data_entries[i] = ySortingHeap->points[l];
                 printf("(%d, %d )", data_entries[i].x, data_entries[i].y);
@@ -580,7 +579,7 @@ int main(int argc, char *argv[])
 
             free(ySortingHeap->points);
             free(ySortingHeap);
-            remaining = remaining - (S * M);
+            remaining = remaining - (S * b);
             printf("\n%d\n", remaining);
         }
 
@@ -606,7 +605,7 @@ NODE* sorting(NODE* nodesList, int size)
     h->points = malloc(sizeof(NODE));
     h->points = nodesList;
 
-    int P = ceil(size / (double)M);
+    int P = ceil(size / (double)b);
     int S = ceil(sqrt(P));
 
     h = build_max_heap_nodes(h, 0, size); // building max heap
@@ -624,12 +623,12 @@ NODE* sorting(NODE* nodesList, int size)
         {
             break;
         }
-        int ele = min(S * M, remaining);
+        int ele = min(S * b, remaining);
 
         HeapNode ySortingHeap = heap_create_node();
         ySortingHeap->points = malloc(sizeof(struct node) * ele);
 
-        for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, size) - k, l < ele; i++, l++)
+        for (int i = k * S * b, l = 0; i < min((k + 1) * S * b, size) - k, l < ele; i++, l++)
         {
             ySortingHeap->points[l] = nodesList[i];
             printf("(%f, %f )", ySortingHeap->points[l]->center.x, ySortingHeap->points[l]->center.y);
@@ -637,7 +636,6 @@ NODE* sorting(NODE* nodesList, int size)
         printf("__\n");
 
         ySortingHeap = build_max_heap_nodes(ySortingHeap, 1, ele); // building max heap
-        printf("********************888\n");
         ySortingHeap = heap_sort_nodes(ySortingHeap, 1, ele); // sorting based on y
 
         for (int j = 0; j < ele; j++)
@@ -645,7 +643,7 @@ NODE* sorting(NODE* nodesList, int size)
             printf("(%f, %f )", ySortingHeap->points[j]->center.x, ySortingHeap->points[j]->center.y);
         }
         printf("&&  after sort\n");
-        for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, size) - k, l < ele; i++, l++)
+        for (int i = k * S * b, l = 0; i < min((k + 1) * S * b, size) - k, l < ele; i++, l++)
         {
             nodesList[i] = ySortingHeap->points[l];
             // printf("(%d, %d )", nodesList[i].x,data_entries[i].y);
@@ -653,7 +651,7 @@ NODE* sorting(NODE* nodesList, int size)
 
         free(ySortingHeap->points);
         free(ySortingHeap);
-        remaining = remaining - (S * M);
+        remaining = remaining - (S * b);
         printf("\n%d\n", remaining);
     }
     return nodesList;
