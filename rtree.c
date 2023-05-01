@@ -124,38 +124,7 @@ NODE *algo_str(NODE *leaveslist, int size)
         coords[i] = findCenter(leaveslist[i]);
         }
 
-        //     // for(int i=0 ;i<size;i++){
-        //     //    printf("%f %f ",coords[i].x,coords[i].y);
-        //     // }
-
-        // // sorting based on values of x
-        // NODE swap =malloc(sizeof(struct node));
-        // for(int j=0; j<size-1;j++)
-        // for(int i =0 ; i<size-1-j; i++){
-        //     if(coords[i].x > coords[i+1].x){
-        //         swap = leaveslist[i];
-        //         leaveslist[i]=leaveslist[i+1];
-        //         leaveslist[i+1] = swap;
-        //     }
-        // }
-        // return leaveslist;
-
-        // // sorting based on values of y
-        // int remaining = data_size;
-        // i=0;
-        // for(int k =0 ; k<S ; k++){
-        //     if(remaining <=0) {break;}
-        //     for(int j=0; j<min(S*M,remaining);j++){
-        //         for(i=k*S*M ; i<min((k+1)*S*M,data_size)-1-j; i++){
-        //             if(data_entries[i].y > data_entries[i+1].y){
-        //                 swap = data_entries[i];
-        //                 data_entries[i]=data_entries[i+1];
-        //                 data_entries[i+1] = swap;
-        //             }
-        //         }
-        //     }
-        //      remaining = remaining - S*M;
-        // }
+      
 }
 
 struct rect findMBR(NODE given_node)
@@ -190,53 +159,6 @@ void printTree(struct rtree* tree){
     // printf();
 }
 
-
-// void preorder(struct rtree* tree){
-//     if(tree->root == NULL){
-//         return;
-//     }
-
-//     int n = tree->count;
-//     NODE* nodesList = malloc(sizeof(NODE) * n);
-//     Data dataList = malloc(sizeof(struct data)*21);
-//     nodesList[0] = tree->root;
-//     int i = 1, j = 0, traversal = 0;
-//     NODE temp = tree->root->node_children[j];
-//     while(i<n){
-//         if (temp->node_children[traversal]){
-//             if (temp->type == 1)
-//             {
-//                 for (int k = 0; k < temp->count; k++)
-//                 {
-//                     // dataList
-//                     temp->entries[k];
-//                 }
-//                 traversal++;
-//                 if (j < M && tree->root->node_children[j++])
-//                 {
-//                     temp = tree->root->node_children[j++];
-//                     continue;
-//                 }
-//                 else
-//                 {
-//                     break;
-//                 }
-//             }
-//             nodesList[i++] = temp->node_children[traversal];
-//             temp = temp->node_children[traversal];
-//         }
-//         else{
-//             if (j < temp->count)
-//             {
-//                 temp = temp->node_children[j++];
-//                 traversal = 0;
-//             }
-//         }
-            
-//     }
-//     // j++;
-
-// }
 
 void order(NODE root, NODE* nodesList, int index)
 {
@@ -302,11 +224,14 @@ int main(int argc, char *argv[]){
     h->points = malloc(sizeof(struct data));
     h->points = data_entries;
     
-    h = build_max_heap(h, 0);            //building max heap
-    h = heap_sort(h, 0);                 //sorting based on x
+    h = build_max_heap(h, 0, 21);            //building max heap
+    h = heap_sort(h, 0, 21);                 //sorting based on x
+
+    for(int i = 0; i<21; i++){
+        data_entries[i] = h->points[i];
+    }
 
     int remaining = data_size;
-    i = 0;
     for (int k = 0; k < S; k++)
     {
         if (remaining <= 0)
@@ -316,73 +241,36 @@ int main(int argc, char *argv[]){
         int ele = min(S * M, remaining);
 
         Heap ySortingHeap = heap_create();
-        Data dataList = calloc(ele, sizeof(struct data));
-        for (int t = 0; t < 21; t++)
+        ySortingHeap->points = malloc(sizeof(struct data)* ele);
+
+        for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, data_size)-k, l<ele; i++, l++)
         {
-            printf("(%d, %d) ", h->points[t].x, h->points[t].y);
+            ySortingHeap->points[l] = data_entries[i];
+            printf("(%d, %d )", ySortingHeap->points[l].x, ySortingHeap->points[l].y);
         }
-        printf("\n");
+        printf("__\n");
 
-        for (i = k * S * M; i < min((k + 1) * S * M, data_size)-k; i++)
+        ySortingHeap = build_max_heap(ySortingHeap, 1, ele); // building max heap
+        printf("********************888\n");
+        ySortingHeap = heap_sort(ySortingHeap, 1, ele);      // sorting based on y
+
+
+
+        for (int j = 0; j < ele; j++)
         {
-            dataList[i] = h->points[i];
-            printf("%d, %d ", dataList[i].x, dataList[i].y);
+            printf("(%d, %d )", ySortingHeap->points[j].x, ySortingHeap->points[j].y);
         }
-        ySortingHeap->points = calloc(ele, sizeof(struct data));
-        for (i = k * S * M; i < ele; i++)
+        printf("&&  after sort\n");
+        for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, data_size) - k, l < ele; i++, l++)
         {
-            ySortingHeap->points[i] = dataList[i];
-            printf("%d, %d ", dataList[i].x, dataList[i].y);
+            data_entries[i] = ySortingHeap->points[l];
+            printf("(%d, %d )", data_entries[i].x,data_entries[i].y);
         }
-        // ySortingHeap->points = dataList;
-        ySortingHeap = build_max_heap(ySortingHeap, 1); // building max heap
-        ySortingHeap = heap_sort(ySortingHeap, 1);      // sorting based on y
-        for (int t = 0; t < ele; t++)
-        {
-            printf("(%d, %d) ", ySortingHeap->points[t].x, ySortingHeap->points[t].y);
-        }
-        // free(ySortingHeap->points);
-        // free(ySortingHeap);
-        // free(dataList);
 
-        // for (int j = 0; j < min(S * M, remaining); j++)
-        // {
-        //     Heap ySortingHeap = heap_create();
-        //     Data dataList = malloc(sizeof(struct data) * ele);
-            
-        //     for (i = k * S * M; i < min((k + 1) * S * M, data_size) ; i++)
-        //     {
-        //         dataList[i - k * S * M] = h->points[i];
-        //     }
-        //     // ySortingHeap->points = realloc(ySortingHeap->points, sizeof(struct data)*ele);
-        //     int numToCopy = ele -j;
-        //     printf("scam\n");
-        //     ySortingHeap->points = malloc( sizeof(struct data)*numToCopy);
-        //     printf("\n");
-        //     for (int t = 0; t < ele; t++)
-        //     {
-        //         ySortingHeap->points[t] = dataList[t];
-        //     }
-
-        //         // ySortingHeap->points = dataList;
-        //         ySortingHeap = build_max_heap(ySortingHeap, 1); // building max heap
-        //         ySortingHeap = heap_sort(ySortingHeap, 1);      // sorting based on y
-
-        //         // for (i = k * S * M; i < min((k + 1) * S * M, data_size) - 1 - j; i++){
-        //         //     data_entries[i] = ySortingHeap->points[i];
-        //         //     printf("(%d, %d) ", ySortingHeap->points[i].x, ySortingHeap->points[i].y);
-        //         // }
-
-        //         for (int t = 0; t < ele; t++)
-        //         {
-        //             printf("(%d, %d) ", ySortingHeap->points[t].x, ySortingHeap->points[t].y);
-        //         }
-        //         free(ySortingHeap->points);
-        //         free(ySortingHeap);
-        //         free(dataList);
-        //     }
-        remaining = remaining - S * M;
-        printf("%d\n", remaining);
+        free(ySortingHeap->points);
+        free(ySortingHeap);
+        remaining = remaining -( S * M);
+        printf("\n%d\n", remaining);
     }
 
 
@@ -400,7 +288,5 @@ int main(int argc, char *argv[]){
 
     // creating tree
     generateTree(leaves_list, 6);
-
-    
 
 }

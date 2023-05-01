@@ -70,23 +70,6 @@ void max_heapify(Heap h, int index, int coord)
                 largest = right;
             }
         }
-
-    // else if(coord == 1){
-    //          if (left < h->size && h->points[left].x != h->points[largest].x)
-    //         {
-    //             if( h->points[left].x > h->points[largest].x || h->points[left].y > h->points[largest].y){
-    //                 largest = left;
-    //             }
-                
-    //         }
-    //         if (right < h->size  &&  h->points[right].x >= h->points[largest].x)
-    //         {
-    //              if( h->points[right].x > h->points[largest].x || h->points[right].y > h->points[largest].y){
-    //                 largest = right;
-    //             }
-            
-    //         }
-    // }
     
     if (largest != index)
     {
@@ -97,8 +80,8 @@ void max_heapify(Heap h, int index, int coord)
     }
 }
 
-Heap build_max_heap(Heap h, int coord){
-    h->size = 21;
+Heap build_max_heap(Heap h, int coord, int size){
+    h->size = size;
     for(int i = floor(h->size / 2) ; i>=0; i--)
     {
         max_heapify(h, i, coord);
@@ -106,9 +89,9 @@ Heap build_max_heap(Heap h, int coord){
     return h;
 }
 
-Heap heap_sort(Heap h, int coord)
+Heap heap_sort(Heap h, int coord, int size)
 {
-    h = build_max_heap(h, coord);
+    h = build_max_heap(h, coord, size);
     for (int i = h->size - 1; i >=1; i--)
     {
         struct data temp = h->points[0];
@@ -119,40 +102,3 @@ Heap heap_sort(Heap h, int coord)
     }
     return h;
 }
-
-// int main(void){
-//     struct data data_entries[21];
-//     FILE *fp;
-//     fp = fopen("data.txt", "r");
-//     if(fp == NULL)
-//     {
-//         printf("Error opening file");
-//         exit(1);
-//     }
-//     int i=0;
-// while(!feof(fp)){
-//         int x,y ;
-//         fscanf(fp,"%d %d",&data_entries[i].x,&data_entries[i].y);
-//         i++;
-// }
-//     fclose(fp);
-
-//     Heap h = malloc(sizeof(struct heap));
-//     h->points = data_entries;
-    
-//     h = build_max_heap(h, 0);
-//     //  printf("%d ", sizeof(h->points)/sizeof(h->points[0]));
-//     int n= h->size;
-//     h = heap_sort(h, 0);
-//     h = heap_sort(h, 1);
-//     // heap_sort(h, 0);
-//     for(int i = 0; i<n; i++){
-//          printf("(%d, %d) ", h->points[i].x, h->points[i].y);
-//     }
-// }
-
-// (2,20)(2,19)-----> issue
-
-//output
-// (1, 9) (1, 20) (2, 4) (2, 5) (2, 10) (2, 20) (2, 19) (3, 4) (3, 5) (3, 20) (4, 5)
-//  (7, 15) (8, 5) (8, 14) (8, 15) (9, 14) (9, 15) (9, 16) (9, 17) (11, 18) (12, 17)
