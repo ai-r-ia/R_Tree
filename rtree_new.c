@@ -18,8 +18,8 @@ int findArea(struct rect mbr){
 }
 
 
-struct center findCenter(NODE given_node){
-    struct center coord;
+struct data finddata(NODE given_node){
+    struct data coord;
     coord.x = (given_node->mbr.x_min+given_node->mbr.x_max)/2.0;
     coord.y = (given_node->mbr.y_min+given_node->mbr.y_max)/2.0;
     // printf("%f %f\n", coord.x , coord.y);
@@ -29,9 +29,9 @@ struct center findCenter(NODE given_node){
 // NODE* algo_str(NODE* leaveslist, int size){
 //     int P = ceil(size/M);
 //     int S = ceil(sqrt(P));
-//     struct center coords[6];
+//     struct data coords[6];
 //     for(int i=0 ;i<size;i++){
-//         coords[i] = findCenter(leaveslist[i]);
+//         coords[i] = finddata(leaveslist[i]);
 //     }
     
 //     // for(int i=0 ;i<size;i++){
@@ -86,7 +86,7 @@ NODE createLeaf(struct data* data_entries, int count){
     NODE new_leaf;
     new_leaf = malloc(sizeof(struct node));
     new_leaf->count=0;
-    new_leaf->kind = 1;
+    new_leaf->type = 1;
     for(int i=0; i<count;i++){
         new_leaf->entries[i] = data_entries[i];
         new_leaf->rect[i] = (struct rect){.x_min=data_entries[i].x,.y_min=data_entries[i].y, .x_max=data_entries[i].x,.y_max=data_entries[i].y}  ;
@@ -103,7 +103,7 @@ NODE* createNodes(NODE *leavesList, int size){
     int j=0;
     for(int i =0; i<no_of_nodes; i++){
         nodesList[i]->count=0;
-        nodesList[i]->kind=2;
+        nodesList[i]->type=2;
         for(int k=0;k<4;k++){
         if(j==size) {break;}
         nodesList[i]->node_children[k] = leavesList[j] ; 
@@ -143,7 +143,7 @@ bool intersects(){
 }
 
 bool searchnode(NODE given_node, int xmin, int xmax, int ymin, int ymax){
-    if(given_node->kind==1){
+    if(given_node->type==1){
 
         for (int i = 0 ; i < given_node->count ; i++){
 

@@ -76,5 +76,8 @@ NODE *algo_str(NODE *leaveslist, int size);
 struct data findCenter(NODE given_node);
 int findArea(struct rect mbr);
 struct rtree *generateTree(NODE *leavesList, int count);
+// void printTree(struct rtree *tree);
+void order(NODE root, NODE *nodesList, int index);
+void preorder(NODE root, int n);
 
 #endif
