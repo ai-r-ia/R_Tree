@@ -7,7 +7,7 @@
 Heap heap_create()
 {
     Heap h = malloc(sizeof(struct heap));
-    h->points = malloc(sizeof(struct data));
+    // h->points = malloc(sizeof(struct data));
     h->size = 0;
     h->capacity = 1;
     h->depth = 0;
@@ -59,23 +59,34 @@ void max_heapify(Heap h, int index, int coord)
             largest = right;
         }
     }
+    else if (coord == 1)
+        {
+            if (left < h->size && h->points[left].y > h->points[largest].y)
+            {
+                largest = left;
+            }
+            if (right < h->size && h->points[right].y > h->points[largest].y)
+            {
+                largest = right;
+            }
+        }
 
-    else if(coord == 1){
-             if (left < h->size && h->points[left].x != h->points[largest].x)
-            {
-                if( h->points[left].x > h->points[largest].x || h->points[left].y > h->points[largest].y){
-                    largest = left;
-                }
+    // else if(coord == 1){
+    //          if (left < h->size && h->points[left].x != h->points[largest].x)
+    //         {
+    //             if( h->points[left].x > h->points[largest].x || h->points[left].y > h->points[largest].y){
+    //                 largest = left;
+    //             }
                 
-            }
-            if (right < h->size  &&  h->points[right].x >= h->points[largest].x)
-            {
-                 if( h->points[right].x > h->points[largest].x || h->points[right].y > h->points[largest].y){
-                    largest = right;
-                }
+    //         }
+    //         if (right < h->size  &&  h->points[right].x >= h->points[largest].x)
+    //         {
+    //              if( h->points[right].x > h->points[largest].x || h->points[right].y > h->points[largest].y){
+    //                 largest = right;
+    //             }
             
-            }
-    }
+    //         }
+    // }
     
     if (largest != index)
     {

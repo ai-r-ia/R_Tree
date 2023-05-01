@@ -7,6 +7,7 @@
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #define max(a,b) (((a) > (b)) ? (a) : (b))
+#define _ceil(n) ()
 
 NODE createLeaf(struct data* data_entries, int count){
 
@@ -75,8 +76,7 @@ struct rtree *generateTree(NODE *leavesList, int count)
 
     printTree(tree);
 
-    // int n = tree->count;
-    preorder(tree->root,tree->count);
+    // preorder(tree->root,tree->count);
 }
 
 void createTree(struct rtree *tree, NODE *leavesList, int count)
@@ -115,8 +115,9 @@ struct data findCenter(NODE given_node)
 
 NODE *algo_str(NODE *leaveslist, int size)
 {
-        int P = ceil(size / M);
+        int P = ceil( size / (double) M);
         int S = ceil(sqrt(P));
+        printf("%d, %d", P, S);
         struct data coords[6];
         for (int i = 0; i < size; i++)
         {
@@ -274,8 +275,9 @@ void preorder(NODE root, int n)
 int main(int argc, char *argv[]){
     int data_size = 21;
     struct data data_entries[21];
-    int P = ceil(data_size / M);
+    int P = ceil(data_size / (double)M);
     int S = ceil(sqrt(P));
+    printf("%d, %d......p ns\n", P, S);
 
     // reading the data
     FILE *fp;
@@ -297,11 +299,54 @@ int main(int argc, char *argv[]){
     
     // applying heapsort to sort based on x and y
     Heap h = heap_create();
+    h->points = malloc(sizeof(struct data));
     h->points = data_entries;
     
     h = build_max_heap(h, 0);            //building max heap
     h = heap_sort(h, 0);                 //sorting based on x
-    h = heap_sort(h, 1);                 //sorting based on y
+
+    int remaining = data_size;
+    i = 0;
+    for (int k = 0; k < S; k++)
+    {
+        if (remaining <= 0)
+        {
+            break;
+        }
+        int ele = min(S * M, remaining);
+         for (int j = 0; j < min(S * M, remaining); j++)
+        {
+            Heap ySortingHeap = heap_create();
+            Data dataList = malloc(sizeof(struct data) * ele);
+            
+            for (i = k * S * M; i < min((k + 1) * S * M, data_size) - 1 - j; i++)
+            {
+                dataList[i] = h->points[i];
+            }
+            // ySortingHeap->points = realloc(ySortingHeap->points, sizeof(struct data)*ele);
+            printf("scam\n");
+            ySortingHeap->points = malloc( sizeof(struct data)*ele);
+            printf("\n");
+            ySortingHeap->points = dataList;
+            ySortingHeap = build_max_heap(ySortingHeap, 0);     // building max heap
+            ySortingHeap = heap_sort(ySortingHeap, 1);          // sorting based on y
+
+            // for (i = k * S * M; i < min((k + 1) * S * M, data_size) - 1 - j; i++){
+            //     data_entries[i] = ySortingHeap->points[i];
+            //     printf("(%d, %d) ", ySortingHeap->points[i].x, ySortingHeap->points[i].y);
+            // }
+
+            for(int t = 0; t<ele; t++){
+                printf("(%d, %d) ", ySortingHeap->points[t].x, ySortingHeap->points[t].y);
+            }
+            free(ySortingHeap);
+            free(dataList);
+        }
+        remaining = remaining - S * M;
+    }
+
+
+   
 
     // creating list of leaves
 

@@ -178,106 +178,106 @@ void searchTree(struct rtree* tree, int xmin, int xmax, int ymin, int ymax){
 }
 
 // main function
-int main(int argc, char *argv[]){
+// int main(int argc, char *argv[]){
 
-    int data_size = 21;
-    struct data data_entries[21];
+//     int data_size = 21;
+//     struct data data_entries[21];
 
-    // reading the data
-    FILE *fp;
-        fp = fopen("data.txt", "r");
-        if(fp == NULL)
-        {
-            printf("Error opening file");
-            exit(1);
-        }
-        int i=0;
-        while(!feof(fp)){
-            int x,y ;
-            fscanf(fp,"%d %d",&data_entries[i].x,&data_entries[i].y);
-            i++;
-    }
-        fclose(fp);
+//     // reading the data
+//     FILE *fp;
+//         fp = fopen("data.txt", "r");
+//         if(fp == NULL)
+//         {
+//             printf("Error opening file");
+//             exit(1);
+//         }
+//         int i=0;
+//         while(!feof(fp)){
+//             int x,y ;
+//             fscanf(fp,"%d %d",&data_entries[i].x,&data_entries[i].y);
+//             i++;
+//     }
+//         fclose(fp);
 
-    int P = ceil(data_size/M);
-    int p=0;
-    int S = ceil(sqrt(p*1.0));
+//     int P = ceil(data_size/M);
+//     int p=0;
+//     int S = ceil(sqrt(p*1.0));
     
-    // implementing str
+//     // implementing str
 
-    // sorting based on values of x
-    struct data swap;
-    for(int j=0; j<data_size-1;j++){
-    for(i =0 ; i<data_size-1-j; i++){
-        if(data_entries[i].x > data_entries[i+1].x){
-            swap = data_entries[i];
-            data_entries[i]=data_entries[i+1];
-            data_entries[i+1] = swap;
-        }
-    }
-    }
+//     // sorting based on values of x
+//     struct data swap;
+//     for(int j=0; j<data_size-1;j++){
+//     for(i =0 ; i<data_size-1-j; i++){
+//         if(data_entries[i].x > data_entries[i+1].x){
+//             swap = data_entries[i];
+//             data_entries[i]=data_entries[i+1];
+//             data_entries[i+1] = swap;
+//         }
+//     }
+//     }
 
-    // sorting based on values of y
-    int remaining = data_size;
-    i=0;
-    for(int k =0 ; k<S ; k++){ 
-        if(remaining <=0) {break;}  
-        for(int j=0; j<min(S*M,remaining);j++){
-            for(i=k*S*M ; i<min((k+1)*S*M,data_size)-1-j; i++){
-                if(data_entries[i].y > data_entries[i+1].y){
-                    swap = data_entries[i];
-                    data_entries[i]=data_entries[i+1];
-                    data_entries[i+1] = swap;
-                }
-            }
-        }
-         remaining = remaining - S*M;
-    }
+//     // sorting based on values of y
+//     int remaining = data_size;
+//     i=0;
+//     for(int k =0 ; k<S ; k++){ 
+//         if(remaining <=0) {break;}  
+//         for(int j=0; j<min(S*M,remaining);j++){
+//             for(i=k*S*M ; i<min((k+1)*S*M,data_size)-1-j; i++){
+//                 if(data_entries[i].y > data_entries[i+1].y){
+//                     swap = data_entries[i];
+//                     data_entries[i]=data_entries[i+1];
+//                     data_entries[i+1] = swap;
+//                 }
+//             }
+//         }
+//          remaining = remaining - S*M;
+//     }
 
-// lite
-    // for(int j=0; j<11;j++)
-    // for(i =0 ; i<11-j; i++){
-    //     if(data_entries[i].y > data_entries[i+1].y){
-    //         swap = data_entries[i];
-    //         data_entries[i]=data_entries[i+1];
-    //         data_entries[i+1] = swap;
-    //     }
-    // }
+// // lite
+//     // for(int j=0; j<11;j++)
+//     // for(i =0 ; i<11-j; i++){
+//     //     if(data_entries[i].y > data_entries[i+1].y){
+//     //         swap = data_entries[i];
+//     //         data_entries[i]=data_entries[i+1];
+//     //         data_entries[i+1] = swap;
+//     //     }
+//     // }
 
-    // for(int j=0; j<9;j++)
-    // for(i =12 ; i<20-j; i++){
-    //     if(data_entries[i].y > data_entries[i+1].y){
-    //         swap = data_entries[i];
-    //         data_entries[i]=data_entries[i+1];
-    //         data_entries[i+1] = swap;
-    //     }
-    // }
+//     // for(int j=0; j<9;j++)
+//     // for(i =12 ; i<20-j; i++){
+//     //     if(data_entries[i].y > data_entries[i+1].y){
+//     //         swap = data_entries[i];
+//     //         data_entries[i]=data_entries[i+1];
+//     //         data_entries[i+1] = swap;
+//     //     }
+//     // }
 
-    // creating list of leaves
+//     // creating list of leaves
 
-    NODE leaves_list[6];
-    int r = 21;
-    for(i = 0 ; i<6; i++){
-    leaves_list[i] = createLeaf(data_entries+i*4,r>4?4:r);
-    r=r-4;
-    }
-    r=21;
+//     NODE leaves_list[6];
+//     int r = 21;
+//     for(i = 0 ; i<6; i++){
+//     leaves_list[i] = createLeaf(data_entries+i*4,r>4?4:r);
+//     r=r-4;
+//     }
+//     r=21;
 
-    // NODE* leaves_list2 = malloc(sizeof(NODE)*6);
-    // leaves_list2 = algo_str(leaves_list, 6);
-    // for(i =0; i<6;i++){
-    //     for(int j =0; j<leaves_list2[i]->count; j++){
-    //         printf("%d %d\n", leaves_list2[i]->entries[j].x,leaves_list2[i]->entries[j].y);
-    //     }
-    //     printf("------------\n");
-    // }+
-    // creating tree
+//     // NODE* leaves_list2 = malloc(sizeof(NODE)*6);
+//     // leaves_list2 = algo_str(leaves_list, 6);
+//     // for(i =0; i<6;i++){
+//     //     for(int j =0; j<leaves_list2[i]->count; j++){
+//     //         printf("%d %d\n", leaves_list2[i]->entries[j].x,leaves_list2[i]->entries[j].y);
+//     //     }
+//     //     printf("------------\n");
+//     // }+
+//     // creating tree
 
-    // struct rtree* tree = malloc(sizeof(struct rtree));
-    // tree->root = malloc(sizeof(struct node));
-    // tree->height = r>0?1:0;
-    // createTree(tree,leaves_list,6);
-    // printf("done\n");
+//     // struct rtree* tree = malloc(sizeof(struct rtree));
+//     // tree->root = malloc(sizeof(struct node));
+//     // tree->height = r>0?1:0;
+//     // createTree(tree,leaves_list,6);
+//     // printf("done\n");
 
-    // printf("%d %d\n", tree->root->node_children[1]->node_children[1]->entries[0].x,tree->root->node_children[1]->node_children[1]->entries[0].y);
-}
+//     // printf("%d %d\n", tree->root->node_children[1]->node_children[1]->entries[0].x,tree->root->node_children[1]->node_children[1]->entries[0].y);
+// }
