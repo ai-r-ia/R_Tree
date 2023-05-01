@@ -89,7 +89,7 @@ NODE* createLevel(NODE *leavesList, int size);
 NODE createLeaf(struct data* data_entries, int count);
 struct rect findMBR(NODE given_node);
 NODE *algo_str(NODE *leaveslist, int size);
-struct data findCenter(NODE given_node);
+struct center findCenter(NODE given_node);
 int findArea(struct rect mbr);
 struct rtree *generateTree(NODE *leavesList, int count);
 // void printTree(struct rtree *tree);
