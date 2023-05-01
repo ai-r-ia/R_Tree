@@ -17,6 +17,7 @@ NODE createLeaf(struct data* data_entries, int count){
 
     for(int i=0; i<count;i++){
         newLeaf->entries[i] = data_entries[i];
+        newLeaf->rect[i] = (struct rect){.x_min = data_entries[i].x, .y_min = data_entries[i].y, .x_max = data_entries[i].x, .y_max = data_entries[i].y};
         newLeaf->count++;
     }
 
@@ -26,7 +27,6 @@ NODE createLeaf(struct data* data_entries, int count){
     newLeaf->center = findCenter(newLeaf);
     printf("found center: %d, %d\n", newLeaf->center.x, newLeaf->center.y);
     newLeaf->area = findArea(newLeaf->mbr);
-
     return newLeaf;
 }
 
@@ -109,9 +109,9 @@ int findArea(struct rect mbr)
         return (mbr.x_max - mbr.x_min) * (mbr.y_max - mbr.y_min);
 }
 
-struct data findCenter(NODE given_node)
+struct center findCenter(NODE given_node)
 {
-        struct data coord;
+        struct center coord;
         coord.x = (given_node->mbr.x_min + given_node->mbr.x_max) / 2.0;
         coord.y = (given_node->mbr.y_min + given_node->mbr.y_max) / 2.0;
         return coord;
@@ -122,7 +122,7 @@ NODE *algo_str(NODE *leaveslist, int size)
         int P = ceil( size / (double) M);
         int S = ceil(sqrt(P));
         printf("%d, %d", P, S);
-        struct data coords[6];
+        struct center coords[6];
         for (int i = 0; i < size; i++)
         {
         coords[i] = findCenter(leaveslist[i]);

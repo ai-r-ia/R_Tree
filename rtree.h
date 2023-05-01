@@ -12,6 +12,13 @@ struct data
     int y;
 };
 
+typedef struct center *Center;
+struct center
+{
+    double x;
+    double y;
+};
+
 struct rect {
     int x_min;
     int y_min;
@@ -31,7 +38,7 @@ struct node
     int count;
     struct rect rect[M];
     struct rect mbr;
-    struct data center;
+    struct center center;
     int area;
     union{
         struct node* node_children[M];
