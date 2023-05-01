@@ -413,6 +413,7 @@ void createTree(struct rtree *tree, NODE *leavesList, int count)
     if (no_of_nodes == 1)
     {  
         tree->root = createNode(0, leavesList, count);
+        tree->height++;
     }
     else
     {
@@ -599,7 +600,7 @@ int main(int argc, char *argv[])
 
         NODE *leaves_list = malloc(sizeof(NODE) * P);
         int r = data_size;
-    for(i = 0 ; i<6; i++){
+    for(i = 0 ; i<P; i++){
         leaves_list[i] = createLeaf(data_entries+i*b,r>b?b:r);
         r=r-b;
     }
@@ -607,7 +608,7 @@ int main(int argc, char *argv[])
     
 
     // creating tree
-    generateTree(leaves_list, 6);
+    generateTree(leaves_list, P);
 
 }
 
