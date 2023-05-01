@@ -450,10 +450,10 @@ struct box findMBR(NODE given_node)
             mbr.x_max = max(mbr.x_max, given_node->entries[i].x);
             mbr.y_max = max(mbr.y_max, given_node->entries[i].y);
         }else{
-            mbr.x_min = min(mbr.x_min, given_node->node_children[i]->center.x);
-            mbr.y_min = min(mbr.y_min, given_node->node_children[i]->center.y);
-            mbr.x_max = max(mbr.x_max, given_node->node_children[i]->center.x);
-            mbr.y_max = max(mbr.y_max, given_node->node_children[i]->center.y);
+            mbr.x_min = min(mbr.x_min, given_node->box[i].x_min);
+            mbr.y_min = min(mbr.y_min, given_node->box[i].y_min);
+            mbr.x_max = max(mbr.x_max, given_node->box[i].x_max);
+            mbr.y_max = max(mbr.y_max, given_node->box[i].y_max);
         }
     }
     return mbr;
@@ -493,7 +493,7 @@ void preorder(NODE root, int index)
         // order(root->entries, nodesList, index+1);
     }
     else if (root->type == 2){
-        printf("Internal node mbr:- bottom left:(%d, %d), top right:(%d, %d)\n", root->mbr.x_min, root->mbr.x_max, root->mbr.y_min, root->mbr.y_max);
+        printf("Internal node mbr:- bottom left:(%d, %d), top right:(%d, %d)\n", root->mbr.x_min, root->mbr.y_min, root->mbr.x_max, root->mbr.y_max);
         for(int i = 0; i<root->count; i++){
 
             preorder(root->node_children[i],root->node_children[i]->count);
