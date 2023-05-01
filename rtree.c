@@ -469,16 +469,16 @@ void printTree(struct rtree* tree){
     int n = tree->root->count;
     printf("height of tree: %d\n", tree->height);
 
-    printf("%d\n", tree->root->count);
-    printf("%d ", tree->root->node_children[0]->count);
-    printf("%d\n", tree->root->node_children[1]->count);
-    printf("%d ", tree->root->node_children[0]->node_children[0]->count);
-    printf("%d ", tree->root->node_children[0]->node_children[1]->count);
-    printf("%d ", tree->root->node_children[0]->node_children[2]->count);
-    printf("%d   ", tree->root->node_children[0]->node_children[3]->count);
-    printf("%d ", tree->root->node_children[1]->node_children[0]->count);
-    printf("%d \n", tree->root->node_children[1]->node_children[1]->count);
-    printf("%d   ", tree->root->node_children[1]->node_children[1]->entries[3].y);
+    // printf("%d\n", tree->root->count);
+    // printf("%d ", tree->root->node_children[0]->count);
+    // printf("%d\n", tree->root->node_children[1]->count);
+    // printf("%d ", tree->root->node_children[0]->node_children[0]->count);
+    // printf("%d ", tree->root->node_children[0]->node_children[1]->count);
+    // printf("%d ", tree->root->node_children[0]->node_children[2]->count);
+    // printf("%d   ", tree->root->node_children[0]->node_children[3]->count);
+    // printf("%d ", tree->root->node_children[1]->node_children[0]->count);
+    // printf("%d \n", tree->root->node_children[1]->node_children[1]->count);
+    // printf("%d   ", tree->root->node_children[1]->node_children[1]->entries[3].y);
 
     // printf();
 }
@@ -488,15 +488,17 @@ void preorder(NODE root, int index)
 {
     if (root->type == 1)
     {
-        // for (int j = 0; j < root->count; j++)
-        // {
-        //     printf("%d, %d | ", root->entries[j].x, root->entries[j].y);
-        // }
+            printf("2D objects in Leaf(external) nodes: ");
+        for (int j = 0; j < root->count; j++)
+        {
+            printf(" (%d, %d)  ", root->entries[j].x, root->entries[j].y);
+        }
+            printf("\n");
         return;
         // order(root->entries, nodesList, index+1);
     }
     else if (root->type == 2){
-        printf("area: %d, mbr: %d, %d, %d, %d\n", root->area, root->mbr.x_min, root->mbr.x_max, root->mbr.y_min, root->mbr.y_max);
+        printf("Internal node mbr:- bottom left:(%d, %d), top right:(%d, %d)\n", root->mbr.x_min, root->mbr.x_max, root->mbr.y_min, root->mbr.y_max);
         for(int i = 0; i<root->count; i++){
 
             preorder(root->node_children[i],root->node_children[i]->count);
