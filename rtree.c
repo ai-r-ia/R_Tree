@@ -25,8 +25,9 @@ NODE createLeaf(struct data* data_entries, int count){
     printf("found mbr: %d, %d, %d, %d...leaf\n", newLeaf->mbr.x_min, newLeaf->mbr.x_max, newLeaf->mbr.y_min, newLeaf->mbr.y_max);
 
     newLeaf->center = findCenter(newLeaf);
-    printf("found center: %d, %d\n", newLeaf->center.x, newLeaf->center.y);
+    printf("found center: %f, %f\n", newLeaf->center.x, newLeaf->center.y);
     newLeaf->area = findArea(newLeaf->mbr);
+    printf("found area: %d\n", newLeaf->area);
     return newLeaf;
 }
 
@@ -45,8 +46,9 @@ NODE createNode(int index,  NODE *leavesList , int size)
     newInternalNode->mbr = findMBR(newInternalNode);
     printf("found mbr: %d, %d, %d, %d...node", newInternalNode->mbr.x_min, newInternalNode->mbr.x_max, newInternalNode->mbr.y_min, newInternalNode->mbr.y_max);
     newInternalNode->center = findCenter(newInternalNode);
-    printf("found center: %d, %d", newInternalNode->center.x, newInternalNode->center.y);
+    printf("found center: %f, %f", newInternalNode->center.x, newInternalNode->center.y);
     newInternalNode->area = findArea(newInternalNode->mbr);
+    printf("found area: %d\n", newInternalNode->area);
 
     return newInternalNode;
 }
@@ -90,7 +92,7 @@ void createTree(struct rtree *tree, NODE *leavesList, int count)
     {
         for (int i = 0; i < count; i++)
         {
-            tree->root->node_children[i] = leavesList[i];
+            tree->root = createNode(0, leavesList, x);
         }
     }
     else
