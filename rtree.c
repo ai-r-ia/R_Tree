@@ -2,8 +2,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-// #include "rtree.h"
-// #include "heapsort.c"
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #define max(a,b) (((a) > (b)) ? (a) : (b))
@@ -89,7 +87,6 @@ int right_child(Heap h, int node, int coord);
 void max_heapify(Heap h, int index, int coord);
 Heap build_max_heap(Heap h, int coord, int size);
 Heap heap_sort(Heap h, int coord, int size);
-
 NODE createNode(int index, NODE *leavesList, int size);
 struct data search(int x1, int x2, int y1, int y2) {}
 void insert(int x1, int y) {}
