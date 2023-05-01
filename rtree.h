@@ -95,5 +95,5 @@ struct rtree *generateTree(NODE *leavesList, int count);
 // void printTree(struct rtree *tree);
 void order(NODE root, NODE *nodesList, int index);
 void preorder(NODE root, int n);
-
+NODE *sorting(NODE *nodesList, int size);
 #endif

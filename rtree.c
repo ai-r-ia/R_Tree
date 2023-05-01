@@ -64,6 +64,7 @@ NODE* createLevel(NODE *leavesList, int size){
         nodesList[i] = createNode(index, leavesList, size);
         index += 4;
     }
+    nodesList = sorting(nodesList, no_of_nodes);
 
     printf("=============\n");
     printf("%d", no_of_nodes);
@@ -166,7 +167,7 @@ void printTree(struct rtree* tree){
     printf("%d   ", tree->root->node_children[0]->node_children[3]->count);
     printf("%d ", tree->root->node_children[1]->node_children[0]->count);
     printf("%d \n", tree->root->node_children[1]->node_children[1]->count);
-    printf("%d   ", tree->root->node_children[1]->node_children[1]->entries[0].y);
+    printf("%d   ", tree->root->node_children[1]->node_children[1]->entries[3].y);
 
     // printf();
 }
@@ -290,12 +291,13 @@ int main(int argc, char *argv[]){
 
     // creating list of leaves
 
-    NODE leaves_list[6];
+    NODE* leaves_list = malloc(sizeof(NODE)*P);
         int r = 21;
     for(i = 0 ; i<6; i++){
         leaves_list[i] = createLeaf(data_entries+i*4,r>4?4:r);
         r=r-4;
     }
+    leaves_list = sorting(leaves_list, P);
     
 
     // creating tree
@@ -303,7 +305,7 @@ int main(int argc, char *argv[]){
 
 }
 
-void sorting(NODE* nodesList, int size)
+NODE* sorting(NODE* nodesList, int size)
 {
     HeapNode h = heap_create_node();
     h->points = malloc(sizeof(NODE));
@@ -335,7 +337,7 @@ void sorting(NODE* nodesList, int size)
         for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, size) - k, l < ele; i++, l++)
         {
             ySortingHeap->points[l] = nodesList[i];
-            printf("(%d, %d )", ySortingHeap->points[l]->center.x, ySortingHeap->points[l]->center.y);
+            printf("(%f, %f )", ySortingHeap->points[l]->center.x, ySortingHeap->points[l]->center.y);
         }
         printf("__\n");
 
@@ -345,7 +347,7 @@ void sorting(NODE* nodesList, int size)
 
         for (int j = 0; j < ele; j++)
         {
-            printf("(%d, %d )", ySortingHeap->points[j]->center.x, ySortingHeap->points[j]->center.y);
+            printf("(%f, %f )", ySortingHeap->points[j]->center.x, ySortingHeap->points[j]->center.y);
         }
         printf("&&  after sort\n");
         for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, size) - k, l < ele; i++, l++)
@@ -359,4 +361,5 @@ void sorting(NODE* nodesList, int size)
         remaining = remaining - (S * M);
         printf("\n%d\n", remaining);
     }
+    return nodesList;
 }

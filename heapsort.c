@@ -54,6 +54,48 @@ int  right_child(Heap h, int node, int coord){
     }
 }
 
+int parent_node(HeapNode h, int node, int coord)
+{
+    int parent;
+    parent = floor(node / 2);
+    if (parent >= 0)
+    {
+        return parent;
+    }
+    else
+    {
+        return node;
+    }
+}
+
+int left_child_node(HeapNode h, int node, int coord)
+{
+    int left;
+    left = 2 * (node) + 1;
+    if (left < h->size)
+    {
+        return left;
+    }
+    else
+    {
+        return node;
+    }
+}
+
+int right_child_node(HeapNode h, int node, int coord)
+{
+    int right;
+    right = 2 * (node) + 2;
+    if (right < h->size)
+    {
+        return right;
+    }
+    else
+    {
+        return node;
+    }
+}
+
 void max_heapify(Heap h, int index, int coord)
 {
     int left = left_child(h, index, coord);
@@ -115,12 +157,13 @@ Heap heap_sort(Heap h, int coord, int size)
 
 void max_heapify_nodes(HeapNode h, int index, int coord)
 {
-    int left = left_child(h, index, coord);
-    int right = right_child(h, index, coord);
+    int left = left_child_node(h, index, coord);
+    int right = right_child_node(h, index, coord);
     int largest = index;
     if (coord == 0)
     {
-        if (left < h->size && h->points[left]->center.x > h->points[largest]->center.x)
+        // printf("%f", h->points[left]->center.x);
+         if (left < h->size && h->points[left]->center.x > h->points[largest]->center.x)
         {
                 largest = left;
         }
