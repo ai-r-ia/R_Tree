@@ -302,3 +302,61 @@ int main(int argc, char *argv[]){
     generateTree(leaves_list, 6);
 
 }
+
+void sorting(NODE* nodesList, int size)
+{
+    HeapNode h = heap_create_node();
+    h->points = malloc(sizeof(NODE));
+    h->points = nodesList;
+
+    int P = ceil(size / (double)M);
+    int S = ceil(sqrt(P));
+
+    h = build_max_heap_nodes(h, 0, size); // building max heap
+    h = heap_sort_nodes(h, 0, size);      // sorting based on x
+
+    for (int i = 0; i < size; i++)
+    {
+        nodesList[i] = h->points[i];
+    }
+
+    int remaining = size;
+    for (int k = 0; k < S; k++)
+    {
+        if (remaining <= 0)
+        {
+            break;
+        }
+        int ele = min(S * M, remaining);
+
+        HeapNode ySortingHeap = heap_create_node();
+        ySortingHeap->points = malloc(sizeof(struct node) * ele);
+
+        for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, size) - k, l < ele; i++, l++)
+        {
+            ySortingHeap->points[l] = nodesList[i];
+            printf("(%d, %d )", ySortingHeap->points[l]->center.x, ySortingHeap->points[l]->center.y);
+        }
+        printf("__\n");
+
+        ySortingHeap = build_max_heap_nodes(ySortingHeap, 1, ele); // building max heap
+        printf("********************888\n");
+        ySortingHeap = heap_sort_nodes(ySortingHeap, 1, ele); // sorting based on y
+
+        for (int j = 0; j < ele; j++)
+        {
+            printf("(%d, %d )", ySortingHeap->points[j]->center.x, ySortingHeap->points[j]->center.y);
+        }
+        printf("&&  after sort\n");
+        for (int i = k * S * M, l = 0; i < min((k + 1) * S * M, size) - k, l < ele; i++, l++)
+        {
+            nodesList[i] = ySortingHeap->points[l];
+            // printf("(%d, %d )", nodesList[i].x,data_entries[i].y);
+        }
+
+        free(ySortingHeap->points);
+        free(ySortingHeap);
+        remaining = remaining - (S * M);
+        printf("\n%d\n", remaining);
+    }
+}

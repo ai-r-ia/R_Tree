@@ -14,6 +14,16 @@ Heap heap_create()
     return h;
 }
 
+HeapNode heap_create_node()
+{
+    HeapNode h = malloc(sizeof(struct heapNode));
+    // h->points = malloc(sizeof(struct node));
+    h->size = 0;
+    h->capacity = 1;
+    h->depth = 0;
+    return h;
+}
+
 int parent(Heap h, int node, int coord){
     int parent;
         parent = floor(node/2);
@@ -110,22 +120,22 @@ void max_heapify_nodes(HeapNode h, int index, int coord)
     int largest = index;
     if (coord == 0)
     {
-        if (left < h->size && h->points[left].center.x > h->points[largest].center.x)
+        if (left < h->size && h->points[left]->center.x > h->points[largest]->center.x)
         {
                 largest = left;
         }
-        if (right < h->size && h->points[right].center.x > h->points[largest].center.x)
+        if (right < h->size && h->points[right]->center.x > h->points[largest]->center.x)
         {
                 largest = right;
         }
     }
     else if (coord == 1)
     {
-        if (left < h->size && h->points[left].center.y > h->points[largest].center.y)
+        if (left < h->size && h->points[left]->center.y > h->points[largest]->center.y)
         {
                 largest = left;
         }
-        if (right < h->size && h->points[right].center.y > h->points[largest].center.y)
+        if (right < h->size && h->points[right]->center.y > h->points[largest]->center.y)
         {
                 largest = right;
         }
@@ -133,7 +143,7 @@ void max_heapify_nodes(HeapNode h, int index, int coord)
 
     if (largest != index)
     {
-        struct node temp = h->points[index];
+        struct node* temp = h->points[index];
         h->points[index] = h->points[largest];
         h->points[largest] = temp;
         max_heapify_nodes(h, largest, coord);
@@ -155,7 +165,7 @@ HeapNode heap_sort_nodes(HeapNode h, int coord, int size)
     h = build_max_heap_nodes(h, coord, size);
     for (int i = h->size - 1; i >= 1; i--)
     {
-        struct node temp = h->points[0];
+        struct node* temp = h->points[0];
         h->points[0] = h->points[i];
         h->points[i] = temp;
         h->size = h->size - 1;

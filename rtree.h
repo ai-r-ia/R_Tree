@@ -67,7 +67,7 @@ struct heap {
 typedef struct heapNode *HeapNode;
 struct heapNode
 {
-    NODE points;
+    NODE* points;
     int size;
     int capacity;
     int depth;
