@@ -7,7 +7,6 @@
 
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 #define max(a,b) (((a) > (b)) ? (a) : (b))
-#define _ceil(n) ()
 
 NODE createLeaf(struct data* data_entries, int count){
 
@@ -22,7 +21,10 @@ NODE createLeaf(struct data* data_entries, int count){
     }
 
     newLeaf->mbr = findMBR(newLeaf);
+    printf("found mbr: %d, %d, %d, %d...leaf\n", newLeaf->mbr.x_min, newLeaf->mbr.x_max, newLeaf->mbr.y_min, newLeaf->mbr.y_max);
+
     newLeaf->center = findCenter(newLeaf);
+    printf("found center: %d, %d\n", newLeaf->center.x, newLeaf->center.y);
     newLeaf->area = findArea(newLeaf->mbr);
 
     return newLeaf;
@@ -41,7 +43,9 @@ NODE createNode(int index,  NODE *leavesList , int size)
     }
 
     newInternalNode->mbr = findMBR(newInternalNode);
+    printf("found mbr: %d, %d, %d, %d...node", newInternalNode->mbr.x_min, newInternalNode->mbr.x_max, newInternalNode->mbr.y_min, newInternalNode->mbr.y_max);
     newInternalNode->center = findCenter(newInternalNode);
+    printf("found center: %d, %d", newInternalNode->center.x, newInternalNode->center.y);
     newInternalNode->area = findArea(newInternalNode->mbr);
 
     return newInternalNode;
@@ -132,10 +136,17 @@ struct rect findMBR(NODE given_node)
     struct rect mbr = given_node->rect[0];
     for (int i = 1; i < given_node->count; i++)
     {
-        mbr.x_min = min(mbr.x_min, given_node->rect[i].x_min);
-        mbr.y_min = min(mbr.y_min, given_node->rect[i].y_min);
-        mbr.x_max = max(mbr.x_max, given_node->rect[i].x_max);
-        mbr.y_max = max(mbr.y_max, given_node->rect[i].y_max);
+        if(given_node->type == 1){
+            mbr.x_min = min(mbr.x_min, given_node->entries[i].x);
+            mbr.y_min = min(mbr.y_min, given_node->entries[i].y);
+            mbr.x_max = max(mbr.x_max, given_node->entries[i].x);
+            mbr.y_max = max(mbr.y_max, given_node->entries[i].y);
+        }else{
+            mbr.x_min = min(mbr.x_min, given_node->node_children[i]->center.x);
+            mbr.y_min = min(mbr.y_min, given_node->node_children[i]->center.y);
+            mbr.x_max = max(mbr.x_max, given_node->node_children[i]->center.x);
+            mbr.y_max = max(mbr.y_max, given_node->node_children[i]->center.y);
+        }
     }
     return mbr;
 }

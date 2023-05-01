@@ -102,3 +102,64 @@ Heap heap_sort(Heap h, int coord, int size)
     }
     return h;
 }
+
+void max_heapify_nodes(HeapNode h, int index, int coord)
+{
+    int left = left_child(h, index, coord);
+    int right = right_child(h, index, coord);
+    int largest = index;
+    if (coord == 0)
+    {
+        if (left < h->size && h->points[left].center.x > h->points[largest].center.x)
+        {
+                largest = left;
+        }
+        if (right < h->size && h->points[right].center.x > h->points[largest].center.x)
+        {
+                largest = right;
+        }
+    }
+    else if (coord == 1)
+    {
+        if (left < h->size && h->points[left].center.y > h->points[largest].center.y)
+        {
+                largest = left;
+        }
+        if (right < h->size && h->points[right].center.y > h->points[largest].center.y)
+        {
+                largest = right;
+        }
+    }
+
+    if (largest != index)
+    {
+        struct node temp = h->points[index];
+        h->points[index] = h->points[largest];
+        h->points[largest] = temp;
+        max_heapify_nodes(h, largest, coord);
+    }
+}
+
+HeapNode build_max_heap_nodes(HeapNode h, int coord, int size)
+{
+    h->size = size;
+    for (int i = floor(h->size / 2); i >= 0; i--)
+    {
+        max_heapify_nodes(h, i, coord);
+    }
+    return h;
+}
+
+HeapNode heap_sort_nodes(HeapNode h, int coord, int size)
+{
+    h = build_max_heap_nodes(h, coord, size);
+    for (int i = h->size - 1; i >= 1; i--)
+    {
+        struct node temp = h->points[0];
+        h->points[0] = h->points[i];
+        h->points[i] = temp;
+        h->size = h->size - 1;
+        max_heapify_nodes(h, 0, coord);
+    }
+    return h;
+}

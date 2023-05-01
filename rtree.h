@@ -57,6 +57,15 @@ struct heap {
     int depth;
 };
 
+typedef struct heapNode *HeapNode;
+struct heapNode
+{
+    NODE points;
+    int size;
+    int capacity;
+    int depth;
+};
+
 Heap heap_create();
 int parent(Heap h, int node, int coord);
 int left_child(Heap h, int node, int coord);
