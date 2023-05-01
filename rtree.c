@@ -39,7 +39,9 @@ NODE createNode(int index,  NODE *leavesList , int size)
     newInternalNode->type = 2;
 
     for(int i = 0; i< 4 && index<size; i++){
-        newInternalNode->node_children[i] = leavesList[index++];
+        newInternalNode->node_children[i] = leavesList[index];
+        newInternalNode->rect[i] = (struct rect){.x_min = leavesList[index]->mbr.x_min, .y_min = leavesList[index]->mbr.y_min, .x_max = leavesList[index]->mbr.x_max, .y_max = leavesList[index]->mbr.y_max};
+        index++;
         newInternalNode->count++;
     }
 
@@ -75,7 +77,7 @@ NODE* createLevel(NODE *leavesList, int size){
 struct rtree *generateTree(NODE *leavesList, int count)
 {
     struct rtree *tree = malloc(sizeof(struct rtree));
-    tree->root = malloc(sizeof(struct node));
+    // tree->root = malloc(sizeof(struct node));
     tree->count=count +1;
     tree->height=1;
     createTree(tree, leavesList, count);
