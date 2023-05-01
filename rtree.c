@@ -314,35 +314,75 @@ int main(int argc, char *argv[]){
             break;
         }
         int ele = min(S * M, remaining);
-         for (int j = 0; j < min(S * M, remaining); j++)
+
+        Heap ySortingHeap = heap_create();
+        Data dataList = calloc(ele, sizeof(struct data));
+        for (int t = 0; t < 21; t++)
         {
-            Heap ySortingHeap = heap_create();
-            Data dataList = malloc(sizeof(struct data) * ele);
-            
-            for (i = k * S * M; i < min((k + 1) * S * M, data_size) - 1 - j; i++)
-            {
-                dataList[i] = h->points[i];
-            }
-            // ySortingHeap->points = realloc(ySortingHeap->points, sizeof(struct data)*ele);
-            printf("scam\n");
-            ySortingHeap->points = malloc( sizeof(struct data)*ele);
-            printf("\n");
-            ySortingHeap->points = dataList;
-            ySortingHeap = build_max_heap(ySortingHeap, 0);     // building max heap
-            ySortingHeap = heap_sort(ySortingHeap, 1);          // sorting based on y
-
-            // for (i = k * S * M; i < min((k + 1) * S * M, data_size) - 1 - j; i++){
-            //     data_entries[i] = ySortingHeap->points[i];
-            //     printf("(%d, %d) ", ySortingHeap->points[i].x, ySortingHeap->points[i].y);
-            // }
-
-            for(int t = 0; t<ele; t++){
-                printf("(%d, %d) ", ySortingHeap->points[t].x, ySortingHeap->points[t].y);
-            }
-            free(ySortingHeap);
-            free(dataList);
+            printf("(%d, %d) ", h->points[t].x, h->points[t].y);
         }
+        printf("\n");
+
+        for (i = k * S * M; i < min((k + 1) * S * M, data_size)-k; i++)
+        {
+            dataList[i] = h->points[i];
+            printf("%d, %d ", dataList[i].x, dataList[i].y);
+        }
+        ySortingHeap->points = calloc(ele, sizeof(struct data));
+        for (i = k * S * M; i < ele; i++)
+        {
+            ySortingHeap->points[i] = dataList[i];
+            printf("%d, %d ", dataList[i].x, dataList[i].y);
+        }
+        // ySortingHeap->points = dataList;
+        ySortingHeap = build_max_heap(ySortingHeap, 1); // building max heap
+        ySortingHeap = heap_sort(ySortingHeap, 1);      // sorting based on y
+        for (int t = 0; t < ele; t++)
+        {
+            printf("(%d, %d) ", ySortingHeap->points[t].x, ySortingHeap->points[t].y);
+        }
+        // free(ySortingHeap->points);
+        // free(ySortingHeap);
+        // free(dataList);
+
+        // for (int j = 0; j < min(S * M, remaining); j++)
+        // {
+        //     Heap ySortingHeap = heap_create();
+        //     Data dataList = malloc(sizeof(struct data) * ele);
+            
+        //     for (i = k * S * M; i < min((k + 1) * S * M, data_size) ; i++)
+        //     {
+        //         dataList[i - k * S * M] = h->points[i];
+        //     }
+        //     // ySortingHeap->points = realloc(ySortingHeap->points, sizeof(struct data)*ele);
+        //     int numToCopy = ele -j;
+        //     printf("scam\n");
+        //     ySortingHeap->points = malloc( sizeof(struct data)*numToCopy);
+        //     printf("\n");
+        //     for (int t = 0; t < ele; t++)
+        //     {
+        //         ySortingHeap->points[t] = dataList[t];
+        //     }
+
+        //         // ySortingHeap->points = dataList;
+        //         ySortingHeap = build_max_heap(ySortingHeap, 1); // building max heap
+        //         ySortingHeap = heap_sort(ySortingHeap, 1);      // sorting based on y
+
+        //         // for (i = k * S * M; i < min((k + 1) * S * M, data_size) - 1 - j; i++){
+        //         //     data_entries[i] = ySortingHeap->points[i];
+        //         //     printf("(%d, %d) ", ySortingHeap->points[i].x, ySortingHeap->points[i].y);
+        //         // }
+
+        //         for (int t = 0; t < ele; t++)
+        //         {
+        //             printf("(%d, %d) ", ySortingHeap->points[t].x, ySortingHeap->points[t].y);
+        //         }
+        //         free(ySortingHeap->points);
+        //         free(ySortingHeap);
+        //         free(dataList);
+        //     }
         remaining = remaining - S * M;
+        printf("%d\n", remaining);
     }
 
 
