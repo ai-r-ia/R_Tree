@@ -23,8 +23,8 @@ For every internal node, the following will be printed-
 where the blank spaces will be filled by the bottom left and top right coordinates of the minimum bounding rectangle of the internal node.
 
 For every external (leaf) node, it will print-
-"External node mbr:- bottom left:(%d, %d), top right:(%d, %d)
-2D objects in Leaf(external) nodes: (_,_), (_,_) ...."
+"External node mbr:- bottom left:(_, _), top right:(_, _)
+2D objects in Leaf(external) nodes: (_, _), (_, _) ...."
 
 where the initial blank spaces will be filled by the bottom left and top right coordinates of the minimum bounding rectangle of the internal node and the blanks in the second line are the 2D data entires stored in that external (leaf) node.
 
