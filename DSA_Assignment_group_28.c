@@ -425,12 +425,12 @@ NODE createLeaf(struct data* data_entries, int count){
 
     for(int i=0; i<count;i++){
         newLeaf->entries[i] = data_entries[i];
-        newLeaf->box[i] = (struct box){.x_min = data_entries[i].x, .y_min = data_entries[i].y, .x_max = data_entries[i].x, .y_max = data_entries[i].y};
+        newLeaf->box[i] = (struct box){.x_min = data_entries[i].x, .y_min = data_entries[i].y,
+         .x_max = data_entries[i].x, .y_max = data_entries[i].y};
         newLeaf->count++;
     }
 
     newLeaf->mbr = findMBR(newLeaf);
-
     newLeaf->center = findCenter(newLeaf);
     newLeaf->area = findArea(newLeaf->mbr);
     return newLeaf;
@@ -446,7 +446,9 @@ NODE createNode(int index,  NODE *leavesList , int size)
 
     for(int i = 0; i< b && index<size; i++){
         newInternalNode->node_children[i] = leavesList[index];
-        newInternalNode->box[i] = (struct box){.x_min = leavesList[index]->mbr.x_min, .y_min = leavesList[index]->mbr.y_min, .x_max = leavesList[index]->mbr.x_max, .y_max = leavesList[index]->mbr.y_max};
+        newInternalNode->box[i] = (struct box){.x_min = leavesList[index]->mbr.x_min,
+        .y_min = leavesList[index]->mbr.y_min, .x_max = leavesList[index]->mbr.x_max, 
+        .y_max = leavesList[index]->mbr.y_max};
         index++;
         newInternalNode->count++;
     }
@@ -469,11 +471,7 @@ NODE* createLevel(NODE *leavesList, int size){
         index += b;
     }
     nodesList = sorting(nodesList, no_of_nodes);
-
-    for(int i=0; i<no_of_nodes;i++){
-    
     return nodesList ;
-    }
 }
 
 //generates an Rtree
@@ -498,7 +496,7 @@ void createTree(struct rtree *tree, NODE *leavesList, int count)
     }
     else
     {
-        printf("creating nodes\n");
+        printf("creating nodes....\n");
         NODE *nodesList = malloc(sizeof(NODE) * no_of_nodes);
         nodesList = createLevel(leavesList, count);
         tree->height++;
@@ -548,23 +546,22 @@ void preorder(NODE root, int index)
 {
     if (root->type == 1)
     {
-            printf("2D objects in Leaf(external) nodes: ");
+        printf("External node mbr:- bottom left:(%d, %d), top right:(%d, %d)\n",
+         root->mbr.x_min, root->mbr.y_min, root->mbr.x_max, root->mbr.y_max);
+            printf("2D objects in Leaf(external) nodes: "); 
         for (int j = 0; j < root->count; j++)
         {
-            printf(" (%d, %d)  ", root->entries[j].x, root->entries[j].y);
+            printf("(%d, %d) ",root->entries[j].x, root->entries[j].y);
         }
-            printf("\n");
-        return;
-        // order(root->entries, nodesList, index+1);
+        printf("\n");
     }
     else if (root->type == 2){
-        printf("Internal node mbr:- bottom left:(%d, %d), top right:(%d, %d)\n", root->mbr.x_min, root->mbr.y_min, root->mbr.x_max, root->mbr.y_max);
+        printf("Internal node mbr:- bottom left:(%d, %d), top right:(%d, %d)\n",
+         root->mbr.x_min, root->mbr.y_min, root->mbr.x_max, root->mbr.y_max);
         for(int i = 0; i<root->count; i++){
-
             preorder(root->node_children[i],root->node_children[i]->count);
         }
     }
-    return;
 }
 
 // sorting data list based on STR implementation of Rtrees
@@ -618,7 +615,6 @@ Data dataSorting (Data data_entries, int data_size, int S){
 NODE* sorting(NODE* nodesList, int size)
 {
     HeapNode h = heap_create_node();
-    // h->points = malloc(sizeof(NODE));
     h->points = nodesList;
 
     int P = _ceil(size / (double)b);
@@ -717,7 +713,8 @@ int main(int argc, char *argv[])
         leaves_list[i] = createLeaf(data_entries+i*b,r>b?b:r);
         r=r-b;
     }
-    leaves_list = sorting(leaves_list, P);
+ 
+     leaves_list = sorting(leaves_list, P);
     
     // creating tree
     generateTree(leaves_list, P);
